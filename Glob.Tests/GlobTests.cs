@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -51,6 +52,8 @@ namespace Glob.Tests
         [InlineData("path/**/somefile.txt", "path/foo/bar/baz/somefile.txt")]
         [InlineData("p?th/*a[bcd]b[e-g]a[1-4][!wxyz][!a-c][!1-3].*", "pGth/yGKNY6acbea3rm8.")]
         [InlineData("/**/file.*", "/folder/file.csv")]
+        [InlineData("/dir/**/", "/dir/dir1/")]
+        [InlineData("/dir/**/", "/dir/dir1/dir2/")]
         [InlineData("/**/file.*", "/file.txt")]
         [InlineData("**/file.*", "/file.txt")]
         [InlineData("/*file.txt", "/file.txt")]
@@ -66,10 +69,11 @@ namespace Glob.Tests
         [InlineData("path/**/somefile.txt", "path//somefile.txt")]
         [InlineData("**/app*.js", "dist/app.js", "dist/app.a72ka8234.js")]      // Regression Test for https://github.com/dazinator/DotNet.Glob/issues/34
         [InlineData("**/y", "y")]      // Regression Test for https://github.com/dazinator/DotNet.Glob/issues/44      
-        [InlineData("**/gfx/*.gfx", "HKEY_LOCAL_MACHINE/gfx/foo.gfx", "HKEY_LOCAL_MACHINE/gfx/foo.gfx")]      // Regression Test for https://github.com/dazinator/DotNet.Glob/issues/46   -  seems to work fine on mixed slashes.   
-        [InlineData("**/gfx/**/*.gfx", "a_b/gfx/bar/foo.gfx", "a_b/gfx/bar/foo.gfx")]      // Regression Test for https://github.com/dazinator/DotNet.Glob/issues/46   - only seems to work on paths with forward slashes.
+        [InlineData("**/gfx/*.gfx", "HKEY_LOCAL_MACHINE/gfx/foo.gfx")]      // Regression Test for https://github.com/dazinator/DotNet.Glob/issues/46   -  seems to work fine on mixed slashes.   
+        [InlineData("**/gfx/**/*.gfx", "a_b/gfx/bar/foo.gfx")]      // Regression Test for https://github.com/dazinator/DotNet.Glob/issues/46   - only seems to work on paths with forward slashes.
         public void IsMatch(string pattern, params string[] testStrings)
         {
+            Debug.WriteLine(pattern);
             var glob = Glob.Parse(pattern);
             foreach (var testString in testStrings)
             {

@@ -20,18 +20,27 @@ namespace Glob.Tokens
         {
             while (_currentCharIndex < _pattern.Length)
             {
-                var charType = ReadChar(_currentCharIndex);
+                var charType = PeekChar(_currentCharIndex);
                 var value = default(string);
 
                 switch (charType)
                 {
                     case TokenType.DirectoryWildcard:
                         _currentCharIndex += 2;
+                        if (PeekChar(_currentCharIndex) == TokenType.DirectorySeparator)
+                        {
+                            ++_currentCharIndex;
+                            value = "**/";
+                        }
+                        else
+                        {
+                            value = "**";
+                        }
                         break;
 
                     case TokenType.Literal:
                         var nextPosition = _currentCharIndex + 1;
-                        while (nextPosition < _pattern.Length && ReadChar(nextPosition) == TokenType.Literal)
+                        while (nextPosition < _pattern.Length && PeekChar(nextPosition) == TokenType.Literal)
                         {
                             ++nextPosition;
                         }
@@ -40,6 +49,7 @@ namespace Glob.Tokens
                         break;
 
                     default:
+                        value = _pattern[_currentCharIndex].ToString();
                         ++_currentCharIndex;
                         break;
                 }
@@ -52,8 +62,13 @@ namespace Glob.Tokens
             return false;
         }
 
-        private TokenType ReadChar(int position)
+        private TokenType PeekChar(int position)
         {
+            if (position >= _pattern.Length)
+            {
+                return TokenType.None;
+            }
+
             switch (_pattern[position])
             {
                 case '[':

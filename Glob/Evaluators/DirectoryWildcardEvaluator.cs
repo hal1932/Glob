@@ -16,6 +16,7 @@ namespace Glob.Evaluators
         {
             _token = tokens[tokenIndex];
             _followingEvaluator = new CompositeEvaluator(tokens, tokenIndex + 1, factory, out nextTokenIndex);
+            _containsFollowingSeparator = _token.Value.EndsWith("/");
         }
 
         public bool IsMatch(string value, int charIndex, out int nextCharIndex)
@@ -24,6 +25,10 @@ namespace Glob.Evaluators
             if (_followingEvaluator.SubEvaluatorsCount == 0)
             {
                 nextCharIndex = value.Length;
+                if (_containsFollowingSeparator)
+                {
+                    return value.EndsWith("/");
+                }
                 return true;
             }
 
@@ -38,7 +43,7 @@ namespace Glob.Evaluators
             if (_followingEvaluator.HasFixedMatchLength)
             {
                 charIndex = value.Length - _followingEvaluator.MinimumMatchLength;
-                if (value[charIndex - 1] != '/')
+                if (charIndex > 0 && value[charIndex - 1] != '/')
                 {
                     nextCharIndex = charIndex;
                     return false;
@@ -49,11 +54,17 @@ namespace Glob.Evaluators
             // 以降の評価器が可変長マッチ
             while (charIndex < value.Length)
             {
-                charIndex = value.IndexOf('/', charIndex);
                 if (_followingEvaluator.IsMatch(value, charIndex, out nextCharIndex))
                 {
                     return true;
                 }
+
+                charIndex = value.IndexOf('/', charIndex);
+                if (charIndex < 0)
+                {
+                    break;
+                }
+                ++charIndex;
             }
 
             nextCharIndex = charIndex;
@@ -67,5 +78,6 @@ namespace Glob.Evaluators
 
         private Token _token;
         private CompositeEvaluator _followingEvaluator;
+        private bool _containsFollowingSeparator;
     }
 }

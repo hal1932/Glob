@@ -62,7 +62,7 @@ namespace Glob
                 }
                 //Debug.WriteLine($" + {evaluator.GetType()}");
             }
-            return true;
+            return charIndex == value.Length;
         }
 
         public override string ToString()
