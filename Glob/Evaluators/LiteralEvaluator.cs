@@ -9,31 +9,32 @@ namespace Glob.Evaluators
 {
     class LiteralEvaluator : IEvaluator
     {
-        public int MinimumMatchLength => _token.Value.Length;
+        public int MinimumMatchLength => _tokenValue.Length;
         public bool HasFixedMatchLength => true;
 
         public LiteralEvaluator(Token literal)
         {
             _token = literal;
+            _tokenValue = literal.Value.ToArray();
         }
 
         public bool IsMatch(string value, int charIndex, out int nextCharIndex)
         {
-            if (value.Length - charIndex < _token.Value.Length)
+            if (value.Length - charIndex < _tokenValue.Length)
             {
                 nextCharIndex = value.Length;
                 return false;
             }
 
             nextCharIndex = charIndex;
-            for (var i = 0; i < _token.Value.Length; ++i)
+            for (var i = 0; i < _tokenValue.Length; ++i)
             {
-                if (value[charIndex + i] != _token.Value[i])
+                if (value[charIndex + i] != _tokenValue[i])
                 {
                     return false;
                 }
             }
-            nextCharIndex += _token.Value.Length;
+            nextCharIndex += _tokenValue.Length;
 
             return true;
         }
@@ -44,5 +45,6 @@ namespace Glob.Evaluators
         }
 
         private Token _token;
+        private char[] _tokenValue;
     }
 }
