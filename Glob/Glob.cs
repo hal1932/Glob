@@ -11,6 +11,8 @@ namespace Glob
 {
     public class Glob
     {
+        public IReadOnlyList<Token> Tokens { get; }
+
         public static Glob Parse(string pattern)
         {
             var tokens = new List<Token>();
@@ -41,11 +43,12 @@ namespace Glob
             //    Debug.WriteLine(evaluator);
             //}
 
-            return new Glob(pattern, evaluators);
+            return new Glob(pattern, tokens.AsReadOnly(), evaluators.ToArray());
         }
 
-        private Glob(string pattern, IEnumerable<IEvaluator> evaluators)
+        private Glob(string pattern, IReadOnlyList<Token> tokens, IEvaluator[] evaluators)
         {
+            Tokens = tokens;
             _pattern = pattern;
             _evaluators = evaluators;
         }
@@ -53,9 +56,10 @@ namespace Glob
         public bool IsMatch(string value)
         {
             var charIndex = 0;
-            foreach (var evaluator in _evaluators)
+            //foreach (var evaluator in _evaluators)
+            for (int i = 0, count = _evaluators.Length; i < count; ++i)
             {
-                if (!evaluator.IsMatch(value, charIndex, out charIndex))
+                if (!_evaluators[i].IsMatch(value, charIndex, out charIndex))
                 {
                     //Debug.WriteLine($" - {evaluator.GetType()}");
                     return false;
@@ -71,6 +75,6 @@ namespace Glob
         }
 
         private string _pattern;
-        private IEnumerable<IEvaluator> _evaluators;
+        private IEvaluator[] _evaluators;
     }
 }

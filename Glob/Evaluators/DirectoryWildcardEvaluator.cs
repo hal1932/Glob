@@ -27,7 +27,7 @@ namespace Glob.Evaluators
                 nextCharIndex = value.Length;
                 if (_containsFollowingSeparator)
                 {
-                    return value.EndsWith("/");
+                    return value[value.Length - 1] == '/';
                 }
                 return true;
             }
@@ -59,11 +59,18 @@ namespace Glob.Evaluators
                     return true;
                 }
 
-                charIndex = value.IndexOf('/', charIndex);
-                if (charIndex < 0)
+                for (var i = charIndex; i < value.Length; ++i)
                 {
-                    break;
+                    if (value[i] == '/')
+                    {
+                        break;
+                    }
                 }
+                //charIndex = value.IndexOf('/', charIndex);
+                //if (charIndex < 0)
+                //{
+                //    break;
+                //}
                 ++charIndex;
             }
 

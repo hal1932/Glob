@@ -28,7 +28,17 @@ namespace Glob.Evaluators
                 return false;
             }
 
-            var isContained = _chars.Contains(value[charIndex]);
+            //var isContained = _chars.Contains(value[charIndex]);
+            var c = value[charIndex];
+            var isContained = true;
+            for (var i = 0; i < _chars.Length; ++i)
+            {
+                if (_chars[i] == c)
+                {
+                    isContained = true;
+                    break;
+                }
+            }
             return (_negate) ? !isContained : isContained;
         }
 

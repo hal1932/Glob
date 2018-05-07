@@ -46,15 +46,16 @@ namespace Glob.Evaluators
             // 以降の評価器が固定長マッチ
             if (_followingEvaluator.HasFixedMatchLength)
             {
-                for (var i = charIndex; i < value.Length - _followingEvaluator.MinimumMatchLength; ++i)
+                var endIndex = value.Length - _followingEvaluator.MinimumMatchLength;
+                for (var i = charIndex; i < endIndex; ++i)
                 {
                     if (value[i] == '/')
                     {
                         nextCharIndex = i;
                         return false;
-                    }
-                    ++charIndex;
+                    }   
                 }
+                charIndex = endIndex;
 
                 return _followingEvaluator.IsMatch(value, charIndex, out nextCharIndex);
             }

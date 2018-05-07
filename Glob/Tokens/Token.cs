@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Glob.Tokens
 {
-    struct Token
+    public struct Token
     {
         public static Token Default = new Token() { Type = TokenType.None };
 

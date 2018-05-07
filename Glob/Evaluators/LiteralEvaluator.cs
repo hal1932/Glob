@@ -32,8 +32,8 @@ namespace Glob.Evaluators
                 {
                     return false;
                 }
-                ++nextCharIndex;
             }
+            nextCharIndex += _token.Value.Length;
 
             return true;
         }

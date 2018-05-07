@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Glob.Tokens
 {
-    enum TokenType
+    public enum TokenType
     {
         None,
         Literal,
