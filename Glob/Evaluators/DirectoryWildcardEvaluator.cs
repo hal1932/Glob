@@ -1,4 +1,5 @@
-﻿using Glob.Tokens;
+﻿using Glob.Extensions;
+using Glob.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace Glob.Evaluators
         {
             _token = tokens[tokenIndex];
             _followingEvaluator = new CompositeEvaluator(tokens, tokenIndex + 1, factory, out nextTokenIndex);
-            _containsFollowingSeparator = _token.Value.EndsWith("/");
+            _containsFollowingSeparator = _token.Value[_token.Value.Length - 1].IsDirectorySeparator();
         }
 
         public bool IsMatch(string value, int charIndex, out int nextCharIndex)
@@ -27,7 +28,7 @@ namespace Glob.Evaluators
                 nextCharIndex = value.Length;
                 if (_containsFollowingSeparator)
                 {
-                    return value[value.Length - 1] == '/';
+                    return value[value.Length - 1].IsDirectorySeparator();
                 }
                 return true;
             }
@@ -43,7 +44,7 @@ namespace Glob.Evaluators
             if (_followingEvaluator.HasFixedMatchLength)
             {
                 charIndex = value.Length - _followingEvaluator.MinimumMatchLength;
-                if (charIndex > 0 && value[charIndex - 1] != '/')
+                if (charIndex > 0 && !value[charIndex - 1].IsDirectorySeparator())
                 {
                     nextCharIndex = charIndex;
                     return false;
@@ -61,16 +62,11 @@ namespace Glob.Evaluators
 
                 for (var i = charIndex; i < value.Length; ++i)
                 {
-                    if (value[i] == '/')
+                    if (value[i].IsDirectorySeparator())
                     {
                         break;
                     }
                 }
-                //charIndex = value.IndexOf('/', charIndex);
-                //if (charIndex < 0)
-                //{
-                //    break;
-                //}
                 ++charIndex;
             }
 

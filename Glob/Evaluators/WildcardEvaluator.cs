@@ -1,4 +1,5 @@
-﻿using Glob.Tokens;
+﻿using Glob.Extensions;
+using Glob.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,7 @@ namespace Glob.Evaluators
             {
                 for (var i = charIndex; i < value.Length; ++i)
                 {
-                    if (value[i] == '/')
+                    if (value[i].IsDirectorySeparator())
                     {
                         nextCharIndex = charIndex + i;
                         return false;
@@ -49,7 +50,7 @@ namespace Glob.Evaluators
                 var endIndex = value.Length - _followingEvaluator.MinimumMatchLength;
                 for (var i = charIndex; i < endIndex; ++i)
                 {
-                    if (value[i] == '/')
+                    if (value[i].IsDirectorySeparator())
                     {
                         nextCharIndex = i;
                         return false;
@@ -68,7 +69,7 @@ namespace Glob.Evaluators
                     return true;
                 }
 
-                if (value[i] == '/')
+                if (value[i].IsDirectorySeparator())
                 {
                     nextCharIndex = i;
                     return false;

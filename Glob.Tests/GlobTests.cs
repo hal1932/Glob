@@ -16,15 +16,15 @@ namespace Glob.Tests
         [InlineData("path/?atstand", "path/moatstand", "path/batstands")]
         [InlineData("/**/file.csv", "/file.txt")]
         [InlineData("/*file.txt", "/folder")]
-        [InlineData("Shock* 12", "HKEY_LOCAL_MACHINE/SOFTWARE/Adobe/Shockwave 12")]
-        [InlineData("*Shock* 12", "HKEY_LOCAL_MACHINE/SOFTWARE/Adobe/Shockwave 12")]
-        [InlineData("*ave*2", "HKEY_LOCAL_MACHINE/SOFTWARE/Adobe/Shockwave 12")]
-        [InlineData("*ave 12", "HKEY_LOCAL_MACHINE/SOFTWARE/Adobe/Shockwave 12")]
+        [InlineData("Shock* 12", "HKEY_LOCAL_MACHINE\\SOFTWARE\\Adobe\\Shockwave 12")]
+        [InlineData("*Shock* 12", "HKEY_LOCAL_MACHINE\\SOFTWARE\\Adobe\\Shockwave 12")]
+        [InlineData("*ave*2", "HKEY_LOCAL_MACHINE\\SOFTWARE\\Adobe\\Shockwave 12")]
+        [InlineData("*ave 12", "HKEY_LOCAL_MACHINE\\SOFTWARE\\Adobe\\Shockwave 12")]
         [InlineData("*ave 12", "wave 12/")]
-        [InlineData("C:/THIS_IS_A_DIR/**/somefile.txt", "C:/THIS_IS_A_DIR/awesomefile.txt")] // Regression Test for https://github.com/dazinator/DotNet.Glob/issues/27
-        [InlineData("C:/name/**", "C:/name.ext", "C:/name_longer.ext")] // Regression Test for https://github.com/dazinator/DotNet.Glob/issues/29
+        [InlineData("C:\\THIS_IS_A_DIR\\**\\somefile.txt", "C:/THIS_IS_A_DIR/awesomefile.txt")] // Regression Test for https://github.com/dazinator/DotNet.Glob/issues/27
+        [InlineData("C:\\name\\**", "C:/name.ext", "C:\\name_longer.ext")] // Regression Test for https://github.com/dazinator/DotNet.Glob/issues/29
         [InlineData("Bumpy/**/AssemblyInfo.cs", "Bumpy.Test/Properties/AssemblyInfo.cs")]      // Regression Test for https://github.com/dazinator/DotNet.Glob/issues/33
-        [InlineData("C:/sources/x-y 1/BIN/DEBUG/COMPILE/**/MSVC*120.DLL", "C:/sources/x-y 1/BIN/DEBUG/COMPILE/ANTLR3.RUNTIME.DLL")]      // Attempted repro for https://github.com/dazinator/DotNet.Glob/issues/37
+        [InlineData("C:\\sources\\x-y 1\\BIN\\DEBUG\\COMPILE\\**\\MSVC*120.DLL", "C:/sources/x-y 1/BIN/DEBUG/COMPILE/ANTLR3.RUNTIME.DLL")]      // Attempted repro for https://github.com/dazinator/DotNet.Glob/issues/37
         [InlineData("literal1", "LITERAL1")] // Regression tests for https://github.com/dazinator/DotNet.Glob/issues/41
         [InlineData("*ral*", "LITERAL1")] // Regression tests for https://github.com/dazinator/DotNet.Glob/issues/41
         [InlineData("[list]s", "LS", "iS", "Is")] // Regression tests for https://github.com/dazinator/DotNet.Glob/issues/41
@@ -60,16 +60,16 @@ namespace Glob.Tests
         [InlineData("C:/THIS_IS_A_DIR/*", "C:/THIS_IS_A_DIR/somefile")] // Regression Test for https://github.com/dazinator/DotNet.Glob/issues/20
         [InlineData("/DIR1/*/*", "/DIR1/DIR2/file.txt")]  // Regression Test for https://github.com/dazinator/DotNet.Glob/issues/21
         [InlineData("~/*~3", "~/abc123~3")]  // Regression Test for https://github.com/dazinator/DotNet.Glob/pull/15
-        [InlineData("**/Shock* 12", "HKEY_LOCAL_MACHINE/SOFTWARE/Adobe/Shockwave 12")]
-        [InlineData("**/*ave*2", "HKEY_LOCAL_MACHINE/SOFTWARE/Adobe/Shockwave 12")]
-        [InlineData("**", "HKEY_LOCAL_MACHINE/SOFTWARE/Adobe/Shockwave 12")]
-        [InlineData("**", "HKEY_LOCAL_MACHINE/SOFTWARE/Adobe/Shockwave 12.txt")]
+        [InlineData("**/Shock* 12", "HKEY_LOCAL_MACHINE\\SOFTWARE\\Adobe\\Shockwave 12")]
+        [InlineData("**/*ave*2", "HKEY_LOCAL_MACHINE\\SOFTWARE\\Adobe\\Shockwave 12")]
+        [InlineData("**", "HKEY_LOCAL_MACHINE\\SOFTWARE\\Adobe\\Shockwave 12")]
+        [InlineData("**", "HKEY_LOCAL_MACHINE\\SOFTWARE\\Adobe\\Shockwave 12.txt")]
         [InlineData("Stuff, *", "Stuff, x")]      // Regression Test for https://github.com/dazinator/DotNet.Glob/issues/31
         [InlineData("\"Stuff*", "\"Stuff")]      // Regression Test for https://github.com/dazinator/DotNet.Glob/issues/32
         [InlineData("path/**/somefile.txt", "path//somefile.txt")]
         [InlineData("**/app*.js", "dist/app.js", "dist/app.a72ka8234.js")]      // Regression Test for https://github.com/dazinator/DotNet.Glob/issues/34
         [InlineData("**/y", "y")]      // Regression Test for https://github.com/dazinator/DotNet.Glob/issues/44      
-        [InlineData("**/gfx/*.gfx", "HKEY_LOCAL_MACHINE/gfx/foo.gfx")]      // Regression Test for https://github.com/dazinator/DotNet.Glob/issues/46   -  seems to work fine on mixed slashes.   
+        [InlineData("**/gfx/*.gfx", "HKEY_LOCAL_MACHINE\\gfx\\foo.gfx")]      // Regression Test for https://github.com/dazinator/DotNet.Glob/issues/46   -  seems to work fine on mixed slashes.   
         [InlineData("**/gfx/**/*.gfx", "a_b/gfx/bar/foo.gfx")]      // Regression Test for https://github.com/dazinator/DotNet.Glob/issues/46   - only seems to work on paths with forward slashes.
         public void IsMatch(string pattern, params string[] testStrings)
         {

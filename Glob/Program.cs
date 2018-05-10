@@ -11,8 +11,8 @@ namespace Glob
     {
         static void Main(string[] args)
         {
-            var glob = Glob.Parse("p?th/a[e-g].txt");
-            var result = glob.IsMatch("path/ae.txt");
+            var glob = Glob.Parse("[list]s");
+            var result = glob.IsMatch("Ls");
             Debug.WriteLine(result);
         }
     }

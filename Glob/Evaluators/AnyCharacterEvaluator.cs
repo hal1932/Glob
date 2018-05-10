@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Glob.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,7 +21,7 @@ namespace Glob.Evaluators
                 return false;
             }
 
-            return value[charIndex] != '/';
+            return !value[charIndex].IsDirectorySeparator();
         }
 
         public override string ToString()
