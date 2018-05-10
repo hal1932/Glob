@@ -27,7 +27,7 @@ namespace Glob.Benchmarks
             _glob = Glob.Parse(GlobPattern);
             var generator = new GlobMatchStringGenerator(_glob.Tokens);
 
-            for (int i = 0; i < 10000; i++)
+            for (int i = 0; i < 1000; i++)
             {
                 var matchString = generator.GenerateRandomMatch();
                 _testMatchingStringsList.Add(matchString);
@@ -35,12 +35,13 @@ namespace Glob.Benchmarks
             }
         }
 
-        [Params(1, 10, 100, 200, 500, 1000)]
+        [Params(100, 1000)]
         public int NumberOfMatches { get; set; }
 
-        [Params("p?th/a[e-g].txt",
-                "p?th/a[bcd]b[e-g].txt",
-                "p?th/a[bcd]b[e-g]a[1-4][!wxyz][!a-c][!1-3].txt")]
+        [Params(
+            "**/*ave*2",
+            "**/gfx/**/*.gfx",
+            "p?th/a[bcd]b[e-g]a[1-4][!wxyz][!a-c][!1-3].txt")]
         public string GlobPattern { get; set; }
 
         [Benchmark]

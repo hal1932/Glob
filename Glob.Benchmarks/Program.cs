@@ -16,8 +16,8 @@ namespace Glob.Benchmarks
             BenchmarkRunner.Run<GlobBenchmarks>();
 #else
             var benchmark = new GlobBenchmarks();
-            benchmark.NumberOfMatches = 10000;
-            benchmark.GlobPattern = "p?th/a[bcd]b[e-g]a[1-4][!wxyz][!a-c][!1-3].txt";
+            benchmark.NumberOfMatches = 1000;
+            benchmark.GlobPattern = "**/gfx/**/*.gfx";
             benchmark.SetupData();
             benchmark.IsMatch_True();
 #endif

@@ -40,9 +40,9 @@ namespace Glob.Evaluators
         {
             nextCharIndex = charIndex;
 
-            foreach (var evaluator in _evaluators)
+            for (int i = 0, count = _evaluators.Count; i < count; ++i)
             {
-                if (!evaluator.IsMatch(value, charIndex, out nextCharIndex))
+                if (!_evaluators[i].IsMatch(value, charIndex, out nextCharIndex))
                 {
                     //Debug.WriteLine($" - {evaluator.GetType()}");
                     return false;

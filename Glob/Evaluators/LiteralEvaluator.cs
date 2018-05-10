@@ -9,13 +9,14 @@ namespace Glob.Evaluators
 {
     class LiteralEvaluator : IEvaluator
     {
-        public int MinimumMatchLength => _tokenValue.Length;
+        public int MinimumMatchLength { get; }
         public bool HasFixedMatchLength => true;
 
         public LiteralEvaluator(Token literal)
         {
             _token = literal;
             _tokenValue = literal.Value.ToArray();
+            MinimumMatchLength = _tokenValue.Length;
         }
 
         public bool IsMatch(string value, int charIndex, out int nextCharIndex)
@@ -27,7 +28,7 @@ namespace Glob.Evaluators
             }
 
             nextCharIndex = charIndex;
-            for (var i = 0; i < _tokenValue.Length; ++i)
+            for (int i = 0, count = _tokenValue.Length; i < count; ++i)
             {
                 if (value[charIndex + i] != _tokenValue[i])
                 {

@@ -28,10 +28,9 @@ namespace Glob.Evaluators
                 return false;
             }
 
-            //var isContained = _chars.Contains(value[charIndex]);
             var c = value[charIndex];
             var isContained = false;
-            for (var i = 0; i < _chars.Length; ++i)
+            for (int i = 0, count = _chars.Length; i < count; ++i)
             {
                 if (_chars[i] == c)
                 {

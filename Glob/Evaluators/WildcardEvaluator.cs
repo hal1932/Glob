@@ -21,10 +21,12 @@ namespace Glob.Evaluators
 
         public bool IsMatch(string value, int charIndex, out int nextCharIndex)
         {
+            var valueLength = value.Length;
+
             // この評価器が最後なら、value の末尾まで '/' 以外のすべてにマッチ
             if (_followingEvaluator.SubEvaluatorsCount == 0)
             {
-                for (var i = charIndex; i < value.Length; ++i)
+                for (int i = charIndex; i < valueLength; ++i)
                 {
                     if (value[i].IsDirectorySeparator())
                     {
@@ -33,22 +35,22 @@ namespace Glob.Evaluators
                     }
                 }
 
-                nextCharIndex = value.Length;
+                nextCharIndex = valueLength;
                 return true;
             }
 
             // 以降の評価器の最低文字数に足りなければマッチしない
-            if (value.Length - charIndex < _followingEvaluator.MinimumMatchLength)
+            if (valueLength - charIndex < _followingEvaluator.MinimumMatchLength)
             {
-                nextCharIndex = value.Length;
+                nextCharIndex = valueLength;
                 return false;
             }
 
             // 以降の評価器が固定長マッチ
             if (_followingEvaluator.HasFixedMatchLength)
             {
-                var endIndex = value.Length - _followingEvaluator.MinimumMatchLength;
-                for (var i = charIndex; i < endIndex; ++i)
+                var endIndex = valueLength - _followingEvaluator.MinimumMatchLength;
+                for (int i = charIndex, count = endIndex; i < count; ++i)
                 {
                     if (value[i].IsDirectorySeparator())
                     {
@@ -62,7 +64,7 @@ namespace Glob.Evaluators
             }
 
             // 以降の評価器が可変長マッチ
-            for (var i = charIndex; i < value.Length; ++i)
+            for (int i = charIndex; i < valueLength; ++i)
             {
                 if (_followingEvaluator.IsMatch(value, i, out nextCharIndex))
                 {
@@ -76,7 +78,7 @@ namespace Glob.Evaluators
                 }
             }
 
-            nextCharIndex = value.Length;
+            nextCharIndex = valueLength;
             return false;
         }
 

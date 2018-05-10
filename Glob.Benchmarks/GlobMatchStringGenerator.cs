@@ -62,22 +62,8 @@ namespace Glob.Benchmarks
                         break;
 
                     case TokenType.DirectoryWildcard:
-                        if (rand.Next(0, 2) == 0)
-                        {
-                            var current = '/';
-                            while (rand.Next(0, 1) == 0)
-                            {
-                                if (current == '/')
-                                {
-                                    current = RandGen.Character();
-                                }
-                                else if (rand.Next(0, 3) == 0)
-                                {
-                                    current = '/';
-                                }
-                                builder.Append(current);
-                            }
-                        }
+                        builder.Append(RandGen.Character());
+                        builder.Append('/');
                         break;
 
                     case TokenType.Literal:
@@ -85,7 +71,7 @@ namespace Glob.Benchmarks
                         break;
 
                     case TokenType.Wildcard:
-                        foreach (var _ in Enumerable.Range(0, rand.Next(10)))
+                        for (var j = 0; j < 3; ++j)
                         {
                             builder.Append(RandGen.Character());
                         }
